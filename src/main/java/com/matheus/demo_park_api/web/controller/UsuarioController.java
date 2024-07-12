@@ -4,6 +4,7 @@ import com.matheus.demo_park_api.entity.Usuario;
 import com.matheus.demo_park_api.service.UsuarioService;
 import com.matheus.demo_park_api.web.dto.UsuarioCreateDto;
 import com.matheus.demo_park_api.web.dto.UsuarioResponseDto;
+import com.matheus.demo_park_api.web.dto.UsuarioSenhaDto;
 import com.matheus.demo_park_api.web.dto.mapper.UsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,9 +33,9 @@ public class UsuarioController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Usuario> updatePassword(@PathVariable Long id, @RequestBody Usuario usuario){
-        Usuario user = usuarioService.aditarSenha(id, usuario.getPassword());
-        return  ResponseEntity.ok(user);
+    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody UsuarioSenhaDto dto){
+        Usuario user = usuarioService.aditarSenha(id, dto.getSenhaAtual(), dto.getNovaSenha(),dto.getConfirmaSenha());
+        return  ResponseEntity.noContent().build();
     }
 
     @GetMapping
