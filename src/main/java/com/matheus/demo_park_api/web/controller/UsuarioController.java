@@ -6,6 +6,13 @@ import com.matheus.demo_park_api.web.dto.UsuarioCreateDto;
 import com.matheus.demo_park_api.web.dto.UsuarioResponseDto;
 import com.matheus.demo_park_api.web.dto.UsuarioSenhaDto;
 import com.matheus.demo_park_api.web.dto.mapper.UsuarioMapper;
+import com.matheus.demo_park_api.web.exception.ErrorMessage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Usuarios" , description = "Contém todas operações")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/usuarios")
@@ -21,6 +29,16 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
+
+    @Operation(summary = "Criar um novo usuário", description = "Recursu para criar um novo usuário",
+            responses = {
+                @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso :)",
+                        content = @Content(mediaType = "application/json",schema = @Schema(implementation = UsuarioResponseDto.class ))),
+                @ApiResponse(responseCode = "409", description = "Usuário e e-mail cadastro no sistema",
+                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                @ApiResponse(responseCode = "422", description = "Recurso não precessado por dados de entrada invalidos ",
+                                content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+    })
     @PostMapping
     public ResponseEntity<UsuarioResponseDto> create(@Valid @RequestBody UsuarioCreateDto usuarioCreateDto){
       Usuario user = usuarioService.salvar(UsuarioMapper.toUsuario(usuarioCreateDto));
