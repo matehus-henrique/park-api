@@ -31,9 +31,9 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorMessage> entityNotFoundException(RuntimeException ex, HttpServletRequest request) {
         log.error("Api Error - ", ex);
         return ResponseEntity
-                .status(HttpStatus.CONFLICT)
+                .status(HttpStatus.NOT_FOUND)  // Corrigido para HttpStatus.NOT_FOUND
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorMessage(request, HttpStatus.CONFLICT, ex.getMessage()));
+                .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
     @ExceptionHandler(UsernameUniqueViolationException.class)
