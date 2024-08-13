@@ -56,4 +56,16 @@ public class UsuarioService {
     public List<Usuario> BuscarTodos() {
         return usuarioRepository.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public Usuario buscarPorUsername(String username) {
+        return usuarioRepository.findByUsername().orElseThrow(
+                () -> new EntityNotFoundException(String.format("Usuário com '%s' não encontado ", username))
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public Usuario.Role buscarRolePorUsername(String username) {
+        return usuarioRepository.findRoleByUsername(username);
+    }
 }
