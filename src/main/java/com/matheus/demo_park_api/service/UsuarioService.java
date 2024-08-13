@@ -25,7 +25,7 @@ public class UsuarioService {
     @Transactional
     public Usuario salvar(Usuario usuario) {
         try {
-            usuario.setPassword(passwordEncoder.encode(usuario.getPassword());
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
             return usuarioRepository.save(usuario);
         } catch (org.springframework.dao.DataIntegrityViolationException ex){
             throw new UsernameUniqueViolationException(String.format("Username '%s' já cadastrado", usuario.getUsername()));
@@ -63,8 +63,8 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public Usuario buscarPorUsername(String username) {
-        return usuarioRepository.findByUsername().orElseThrow(
-                () -> new EntityNotFoundException(String.format("Usuário com '%s' não encontado ", username))
+        return usuarioRepository.findByUsername(username).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Usuario com '%s' não encontrado", username))
         );
     }
 
